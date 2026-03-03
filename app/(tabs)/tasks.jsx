@@ -11,10 +11,11 @@ import React, { useCallback, useState } from 'react';
 import { api } from '../../services/api';
 import { router, useFocusEffect } from 'expo-router';
 import { TaskCard } from '../../components/TaskCard';
-import Header from '../../components/Header';
 import SearchInput from '../../components/Input';
 import { Ionicons } from '@expo/vector-icons';
 import TaskFilters from '../../components/TaskFilters';
+import ScreenLayout from '../../components/ScreenLayout';
+import colors from '../constants/colors';
 
 // ! TODO: GUARDAR EN CACHE
 /**
@@ -62,24 +63,24 @@ const Tasks = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <Header title="Mis Tareas" />
+    <ScreenLayout title={'Mis Tareas'}>
+      <View style={styles.container}>
+        <SearchInput onSearch={onSearch} />
 
-      <SearchInput onSearch={onSearch} />
+        <TaskFilters onFilterChange={fetchTasks} />
 
-      <TaskFilters onFilterChange={fetchTasks} />
-
-      <FlatList
-        data={tasks}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => <TaskCard task={item} />}
-        refreshControl={<RefreshControl refreshing={loading} onRefresh={fetchTasks} />}
-        ListEmptyComponent={<Text style={styles.empty}>No tienes tareas</Text>}
-      />
-      <TouchableOpacity style={styles.fab} onPress={() => router.push('tasks/new')}>
-        <Ionicons name="add-outline" size={28} color="#fff" />
-      </TouchableOpacity>
-    </View>
+        <FlatList
+          data={tasks}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => <TaskCard task={item} />}
+          refreshControl={<RefreshControl refreshing={loading} onRefresh={fetchTasks} />}
+          ListEmptyComponent={<Text style={styles.empty}>No tienes tareas</Text>}
+        />
+        <TouchableOpacity style={styles.fab} onPress={() => router.push('tasks/new')}>
+          <Ionicons name="add-outline" size={28} color="#fff" />
+        </TouchableOpacity>
+      </View>
+    </ScreenLayout>
   );
 };
 
@@ -88,22 +89,14 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 10,
     paddingHorizontal: 24,
+    backgroundColor: colors.background,
   },
-  form: {
-    flex: 1,
-    justifyContent: 'center', // centra verticalmente el formulario
-    alignItems: 'center',
-    gap: 20,
-  },
-  titulo: {
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-
-  input: {
-    padding: 10,
-    border: '1px solid grey',
-    borderRadius: 10,
+  empty: {
+    textAlign: 'center',
+    marginTop: 60,
+    fontSize: 15,
+    fontFamily: 'Mulish_400Regular',
+    color: colors.textSecondary,
   },
   fab: {
     position: 'absolute',
@@ -112,20 +105,14 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#7C3AED',
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#7C3AED',
+    shadowColor: colors.primary,
     shadowOpacity: 0.4,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
     elevation: 6,
-  },
-  fabText: {
-    color: '#fff',
-    fontSize: 28,
-    lineHeight: 30,
-    fontWeight: '300',
   },
 });
 

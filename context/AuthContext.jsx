@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { api } from '../services/api';
-import { router } from 'expo-router';
 
 const AuthContext = createContext(null);
 
@@ -19,7 +18,6 @@ export function AuthProvider({ children }) {
         setToken(savedToken);
         const userData = await api.get('profile');
         setUser(userData);
-        router.replace('/(tabs)/tasks');
       }
       setLoading(false);
     };
@@ -31,14 +29,12 @@ export function AuthProvider({ children }) {
     await AsyncStorage.setItem('token', data.token);
     setToken(data.token);
     setUser(data.user);
-    router.replace('/(tabs)/tasks');
   };
 
   const logout = async () => {
     await AsyncStorage.removeItem('token');
     setToken(null);
     setUser(null);
-    router.replace('/login');
   };
 
   return (

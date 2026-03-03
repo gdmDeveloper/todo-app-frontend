@@ -2,6 +2,7 @@ import { View, Text, Alert, StyleSheet, TextInput, TouchableOpacity } from 'reac
 import React, { useState } from 'react';
 import { router } from 'expo-router';
 import { api } from '../../services/api';
+import ScreenLayout from '../../components/ScreenLayout';
 
 const NewTask = () => {
   const [title, setTitle] = useState('');
@@ -21,19 +22,26 @@ const NewTask = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput value={title} onChangeText={setTitle} placeholder="Título" style={styles.input} />
-      <TextInput
-        value={description}
-        onChangeText={setDescription}
-        placeholder="Descripción"
-        style={styles.input}
-        multiline
-      />
-      <TouchableOpacity onPress={handleCreate} style={styles.boton}>
-        <Text style={styles.botonTexto}>Crear tarea</Text>
-      </TouchableOpacity>
-    </View>
+    <ScreenLayout title={'Nueva tarea'}>
+      <View style={styles.container}>
+        <TextInput
+          value={title}
+          onChangeText={setTitle}
+          placeholder="Título"
+          style={styles.input}
+        />
+        <TextInput
+          value={description}
+          onChangeText={setDescription}
+          placeholder="Descripción"
+          style={styles.input}
+          multiline
+        />
+        <TouchableOpacity onPress={handleCreate} style={styles.boton}>
+          <Text style={styles.botonTexto}>Crear tarea</Text>
+        </TouchableOpacity>
+      </View>
+    </ScreenLayout>
   );
 };
 

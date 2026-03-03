@@ -3,6 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { api } from '../services/api';
 import { useRef, useState } from 'react';
 import { router } from 'expo-router';
+import colors from '../app/constants/colors';
 
 export function TaskCard({ task, onPress, onUpdate }) {
   const [completed, setCompleted] = useState(task.completed);
@@ -104,15 +105,17 @@ export function TaskCard({ task, onPress, onUpdate }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.surface,
     padding: 10,
     borderRadius: 12,
     marginBottom: 20,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 20,
+    borderWidth: 1,
+    borderColor: colors.border,
     shadowColor: '#000',
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 2,
   },
@@ -125,13 +128,13 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: '#D1D5DB',
+    borderColor: colors.borderStrong,
   },
   radioCompleted: {
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#7C3AED',
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -141,35 +144,37 @@ const styles = StyleSheet.create({
   titulo: {
     fontSize: 15,
     fontFamily: 'Mulish_600SemiBold',
-    color: '#1C1C1E',
+    color: colors.textPrimary,
   },
   tituloCompleted: {
     textDecorationLine: 'line-through',
-    color: '#9CA3AF',
+    color: colors.textMuted,
   },
   descripcion: {
     fontSize: 13,
-    color: '#6B7280',
+    color: colors.textSecondary,
     marginTop: 2,
     fontFamily: 'Mulish_400Regular',
   },
   descripcionCompleted: {
-    color: '#D1D5DB',
+    color: colors.textMuted,
   },
   menuButton: {
     padding: 4,
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.1)', // más transparente
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   menu: {
-    position: 'absolute', // posición absoluta
-    backgroundColor: '#fff',
+    position: 'absolute',
+    backgroundColor: colors.surfaceHigh,
     borderRadius: 14,
     width: 230,
+    borderWidth: 1,
+    borderColor: colors.border,
     shadowColor: '#000',
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.3,
     shadowRadius: 12,
     elevation: 8,
     overflow: 'hidden',
@@ -183,10 +188,10 @@ const styles = StyleSheet.create({
   menuItemText: {
     fontSize: 15,
     fontFamily: 'Mulish_500Medium',
-    color: '#1C1C1E',
+    color: colors.textPrimary,
   },
   menuDivider: {
     height: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: colors.border,
   },
 });

@@ -11,4 +11,5 @@ TODOLIST
 - Boton crear grupo etc
 - En lugar de descripción, poner fecha límite.
 - Centralizar todos los estilos en una carpeta o en varias, pero no en el componente
-"# todo-app-frontend" 
+- Cuando busco algo, que sea con los filtros
+- Asignación de tareas

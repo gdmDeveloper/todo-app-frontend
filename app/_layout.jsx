@@ -12,25 +12,26 @@ import {
   Mulish_300Light_Italic,
   Mulish_500Medium,
 } from '@expo-google-fonts/mulish';
+import { TiltNeon_400Regular } from '@expo-google-fonts/tilt-neon';
 import * as SplashScreen from 'expo-splash-screen';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
 const RootLayoutNav = () => {
   const { token, loading } = useAuth();
 
-  useEffect(() => {
-    if (!loading && !token) router.replace('login');
-  }, [token, loading]);
-
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="login" />
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="tasks/new" />
-      <Stack.Screen name="groups/join" />
-      <Stack.Screen name="groups/new" />
-    </Stack>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="login" />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="tasks/new" />
+        <Stack.Screen name="groups/join" />
+        <Stack.Screen name="groups/new" />
+      </Stack>
+    </GestureHandlerRootView>
   );
 };
 
@@ -43,6 +44,7 @@ export default function RootLayout() {
     Mulish_800ExtraBold,
     Mulish_300Light_Italic,
     Mulish_500Medium,
+    TiltNeon_400Regular,
   });
 
   useEffect(() => {

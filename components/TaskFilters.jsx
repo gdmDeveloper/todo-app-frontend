@@ -115,7 +115,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 24,
     gap: 8,
-    marginBottom: 12,
+    marginBottom: 20,
+    marginTop: 25,
+    justifyContent: 'space-around',
   },
   filterButton: {
     flexDirection: 'row',

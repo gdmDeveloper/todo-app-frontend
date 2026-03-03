@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
+    paddingTop: 20,
   },
   placeholder: {
     width: 32, // mismo ancho que el icono para centrar el título
