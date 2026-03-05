@@ -1,14 +1,11 @@
-// Create function to connect the api.
-
+// services/api.js
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 const apiRequest = async (endpoint, options = {}) => {
-  // Get token
   const token = await AsyncStorage.getItem('token');
-
-  // Create petition
 
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
@@ -18,6 +15,12 @@ const apiRequest = async (endpoint, options = {}) => {
       ...options.headers,
     },
   });
+
+  if (response.status === 401) {
+    await AsyncStorage.removeItem('token'); // 👈 mismo storage que usas para guardar
+    router.replace('/login');
+    return;
+  }
 
   const data = await response.json();
 
@@ -32,5 +35,5 @@ export const api = {
   get: (endpoint) => apiRequest(endpoint),
   post: (endpoint, body) => apiRequest(endpoint, { method: 'POST', body: JSON.stringify(body) }),
   patch: (endpoint, body) => apiRequest(endpoint, { method: 'PATCH', body: JSON.stringify(body) }),
-  delete: (endpoint, body) => apiRequest(endpoint, { method: 'DELETE' }),
+  delete: (endpoint) => apiRequest(endpoint, { method: 'DELETE' }),
 };

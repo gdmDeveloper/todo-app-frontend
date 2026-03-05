@@ -1,22 +1,21 @@
+// app/index.jsx
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, Animated, Easing, ImageBackground } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '../context/AuthContext';
 
-const MIN_DURATION = 5000;
-const DOT_COUNT = 4;
+const MIN_DURATION = 2000;
 
 const Index = () => {
   const { token, isLoading } = useAuth();
-  const [status, setStatus] = useState('Iniciando...');
   const startTime = useRef(Date.now());
   const redirected = useRef(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
-  const dotAnims = useRef(Array.from({ length: DOT_COUNT }, () => new Animated.Value(0))).current;
+  const progressAnim = useRef(new Animated.Value(0)).current;
 
-  // Animación de entrada
+  // Animación entrada
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
@@ -34,143 +33,99 @@ const Index = () => {
     ]).start();
   }, []);
 
-  // Spinner
+  // Barra de progreso que se llena en MIN_DURATION
   useEffect(() => {
-    const animations = dotAnims.map((anim, i) =>
-      Animated.sequence([
-        Animated.delay(i * 180),
-        Animated.timing(anim, {
-          toValue: 1,
-          duration: 350,
-          useNativeDriver: true,
-          easing: Easing.out(Easing.cubic),
-        }),
-        Animated.timing(anim, {
-          toValue: 0,
-          duration: 350,
-          useNativeDriver: true,
-          easing: Easing.in(Easing.cubic),
-        }),
-      ]),
-    );
-    Animated.loop(Animated.parallel(animations)).start();
+    Animated.timing(progressAnim, {
+      toValue: 1,
+      duration: MIN_DURATION,
+      useNativeDriver: false,
+      easing: Easing.linear,
+    }).start();
   }, []);
 
-  // ! LOGS
-
-  // Redirige cuando AuthContext termina de cargar + mínimo 10s
+  // Redirección
   useEffect(() => {
     if (isLoading || redirected.current) return;
-
     redirected.current = true;
-    setStatus(token ? '¡Bienvenido de vuelta!' : 'Listo');
-
     const elapsed = Date.now() - startTime.current;
     const remaining = Math.max(0, MIN_DURATION - elapsed);
-
     setTimeout(() => {
       router.replace(token ? '/(tabs)/tasks' : '/login');
     }, remaining);
   }, [isLoading]);
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require('../img/hero.png')}
+      style={styles.background}
+      resizeMode="contain"
+      imageStyle={{ backgroundColor: '#1D1C21' }}
+    >
+      {/* Contenido centrado */}
       <Animated.View
         style={[
           styles.heroContainer,
           { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
         ]}
-      >
-        <View style={styles.iconWrapper}>
-          <Text style={styles.iconText}>✓</Text>
-        </View>
-        <Text style={styles.title}></Text>
-        <Text style={styles.subtitle}>Organiza tu día, sin excusas.</Text>
-      </Animated.View>
+      />
 
-      <Animated.View style={[styles.spinnerContainer, { opacity: fadeAnim }]}>
-        {dotAnims.map((anim, i) => (
+      {/* Barra de carga abajo */}
+      <Animated.View style={[styles.bottomContainer, { opacity: fadeAnim }]}>
+        <Text style={styles.statusText}>{status}</Text>
+        <View style={styles.barBackground}>
           <Animated.View
-            key={i}
             style={[
-              styles.dot,
+              styles.barFill,
               {
-                transform: [
-                  {
-                    translateY: anim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, -10],
-                    }),
-                  },
-                ],
-                opacity: anim.interpolate({
+                width: progressAnim.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [0.3, 1],
+                  outputRange: ['0%', '100%'],
                 }),
               },
             ]}
           />
-        ))}
+        </View>
       </Animated.View>
-
-      <Animated.Text style={[styles.statusText, { opacity: fadeAnim }]}>{status}</Animated.Text>
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    backgroundColor: '#7C3AED',
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 32,
+    backgroundColor: '#1D1C21',
   },
   heroContainer: {
-    alignItems: 'center',
-    gap: 12,
+    flex: 1,
   },
-  iconWrapper: {
-    width: 80,
-    height: 80,
-    borderRadius: 24,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 8,
-  },
-  iconText: {
-    fontSize: 40,
-    color: '#fff',
-  },
-  title: {
-    fontSize: 48,
-    fontFamily: 'Mulish_800ExtraBold',
-    color: '#fff',
-    letterSpacing: -1,
-  },
-  subtitle: {
-    fontSize: 16,
-    fontFamily: 'Mulish_400Regular',
-    color: 'rgba(255,255,255,0.75)',
-    letterSpacing: 0.3,
-  },
-  spinnerContainer: {
-    flexDirection: 'row',
+  bottomContainer: {
+    width: '100%',
+    paddingHorizontal: 32,
+    paddingBottom: 60,
     gap: 10,
     alignItems: 'center',
-  },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#fff',
   },
   statusText: {
     fontSize: 13,
     fontFamily: 'Mulish_500Medium',
     color: 'rgba(255,255,255,0.6)',
     letterSpacing: 0.5,
+  },
+  barBackground: {
+    width: '100%',
+    height: 4,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  barFill: {
+    height: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 2,
   },
 });
 

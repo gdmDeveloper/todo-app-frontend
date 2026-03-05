@@ -1,8 +1,11 @@
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { router, useFocusEffect } from 'expo-router';
 import { api } from '../../services/api';
-import GroupCard from '../../components/GroupCard';
+import { GroupCard } from '../../components/GroupCard';
+import ScreenLayout from '../../components/ScreenLayout';
+import Button from '../../components/Button';
+('../../components/GroupCard');
 
 const Groups = () => {
   const [groups, setGroups] = useState([]);
@@ -19,48 +22,37 @@ const Groups = () => {
     }, []),
   );
 
+  const handleCreateGroup = () => {
+    router.push('groups/new');
+  };
+
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={groups}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <GroupCard group={item} onPress={() => router.push(`/groups/${item._id}`)}></GroupCard>
-        )}
-      />
-      <View style={styles.botones}>
-        <TouchableOpacity onPress={() => router.push('/groups/new')} style={styles.boton}>
-          <Text>Crear grupo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => router.push('/groups/join')} style={styles.boton}>
-          <Text>Unirse</Text>
-        </TouchableOpacity>
+    <ScreenLayout title={'Mis Grupos'}>
+      <View style={styles.container}>
+        <Button icon={''} text={'Crear grupo'} onPress={handleCreateGroup}></Button>
+        <Button icon={''} text={'Unirme a un grupo'}></Button>
+
+        <FlatList
+          data={groups}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <GroupCard
+              group={item}
+              onPress={() => router.push(`groups/${item._id}`)}
+              onUpdate={() => router.push(`/groups/${item._id}`)}
+            ></GroupCard>
+          )}
+        />
       </View>
-    </View>
+    </ScreenLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
+    paddingTop: 10,
     paddingHorizontal: 24,
-  },
-  form: {
-    flex: 1,
-    justifyContent: 'center', // centra verticalmente el formulario
-    alignItems: 'center',
-    gap: 20,
-  },
-  titulo: {
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-
-  input: {
-    padding: 10,
-    border: '1px solid grey',
-    borderRadius: 10,
   },
 });
 

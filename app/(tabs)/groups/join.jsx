@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet } from 'react-native';
-import { api } from '../../services/api';
+import { api } from '../../../services/api';
 
 const JoinGroup = () => {
   const [code, setCode] = useState('');

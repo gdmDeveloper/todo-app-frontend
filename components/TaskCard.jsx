@@ -1,25 +1,26 @@
-import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+// components/TaskCard.jsx
+import { View, StyleSheet, ImageBackground } from 'react-native';
 import { api } from '../services/api';
-import { useRef, useState } from 'react';
-import { router } from 'expo-router';
+import { useState } from 'react';
 import colors from '../app/constants/colors';
+import { TaskCardContent } from './TaskCardContent';
 
-export function TaskCard({ task, onPress, onUpdate }) {
+const DEFAULT_CONFIG = {
+  color: '#FFFFFF',
+  label: null,
+  cardBg: '#2C2C3E',
+  iconBg: 'rgba(255,255,255,0.1)',
+};
+
+const PRIORITY_CONFIG = {
+  high: { color: '#FFFFFF', label: 'Alta', cardBg: '#C0544A', iconBg: 'rgba(0,0,0,0.15)' },
+  medium: { color: '#FFFFFF', label: 'Media', cardBg: '#4A7FA5', iconBg: 'rgba(0,0,0,0.15)' },
+  low: { color: '#FFFFFF', label: 'Baja', cardBg: '#4A9E6E', iconBg: 'rgba(0,0,0,0.15)' },
+};
+
+export function TaskCard({ task, onUpdate }) {
   const [completed, setCompleted] = useState(task.completed);
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
-  const menuButtonRef = useRef(null);
-
-  const openMenu = () => {
-    menuButtonRef.current.measure((x, y, width, height, pageX, pageY) => {
-      setMenuPosition({
-        top: pageY + height, // justo debajo del botón
-        right: 16, // pegado a la derecha
-      });
-      setMenuVisible(true);
-    });
-  };
+  const config = PRIORITY_CONFIG[task.priority] || DEFAULT_CONFIG;
 
   const toggleComplete = async () => {
     try {
@@ -31,152 +32,78 @@ export function TaskCard({ task, onPress, onUpdate }) {
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      setMenuVisible(false);
-      await api.delete(`tasks/${task._id}`);
-      if (onUpdate) onUpdate();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleEdit = () => {
-    setMenuVisible(false);
-    router.push(`tasks/${task._id}`);
-  };
-
   return (
-    <TouchableOpacity onPress={onPress} style={styles.card}>
-      {/* Radio button */}
-      <TouchableOpacity onPress={toggleComplete} style={styles.radio}>
-        {completed ? (
-          <View style={styles.radioCompleted}>
-            <Ionicons name="checkmark" size={14} color="#fff" />
-          </View>
-        ) : (
-          <View style={styles.radioEmpty} />
-        )}
-      </TouchableOpacity>
-
-      {/* Contenido */}
-      <View style={styles.content}>
-        <Text style={[styles.titulo, completed && styles.tituloCompleted]}>{task.title}</Text>
-        {task.description && (
-          <Text style={[styles.descripcion, completed && styles.descripcionCompleted]}>
-            {task.description}
-          </Text>
-        )}
-      </View>
-
-      {/* Tres puntitos */}
-      <TouchableOpacity ref={menuButtonRef} onPress={openMenu} style={styles.menuButton}>
-        <Ionicons name="ellipsis-vertical" size={18} color="#9CA3AF" />
-      </TouchableOpacity>
-
-      {/* Menu desplegable */}
-      <Modal
-        visible={menuVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setMenuVisible(false)}
-      >
-        <TouchableOpacity
-          style={styles.overlay}
-          onPress={() => setMenuVisible(false)}
-          activeOpacity={1}
+    <>
+      {task.coverImage ? (
+        <ImageBackground
+          source={{ uri: task.coverImage }}
+          style={[styles.cardWrapper, completed && styles.cardCompleted]}
+          imageStyle={styles.backgroundImage}
         >
-          <View style={[styles.menu, { top: menuPosition.top, right: menuPosition.right }]}>
-            <TouchableOpacity onPress={handleEdit} style={styles.menuItem}>
-              <Ionicons name="pencil-outline" size={18} color="#1C1C1E" />
-              <Text style={styles.menuItemText}>Editar tarea</Text>
-            </TouchableOpacity>
-            <View style={styles.menuDivider} />
-            <TouchableOpacity onPress={handleDelete} style={styles.menuItem}>
-              <Ionicons name="trash-outline" size={18} color="#EF4444" />
-              <Text style={[styles.menuItemText, { color: '#EF4444' }]}>Eliminar tarea</Text>
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-      </Modal>
-    </TouchableOpacity>
+          <View style={styles.overlayImage} />
+          <TaskCardContent
+            task={task}
+            completed={completed}
+            toggleComplete={toggleComplete}
+            config={config}
+            onUpdate={onUpdate}
+          />
+        </ImageBackground>
+      ) : (
+        <View
+          style={[
+            styles.cardWrapper,
+            { backgroundColor: config.cardBg },
+            completed && styles.cardCompleted,
+          ]}
+        >
+          <TaskCardContent
+            task={task}
+            completed={completed}
+            toggleComplete={toggleComplete}
+            config={config}
+            onUpdate={onUpdate}
+          />
+        </View>
+      )}
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: colors.surface,
+  cardWrapper: {
+    borderRadius: 20,
+    marginBottom: 14,
     padding: 10,
-    borderRadius: 12,
-    marginBottom: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 20,
-    borderWidth: 1,
-    borderColor: colors.border,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 2,
+    elevation: 6,
+    maxHeight: 120,
   },
-  radio: {
-    width: 24,
-    height: 24,
+  cardCompleted: {
+    opacity: 0.55,
   },
-  radioEmpty: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: colors.borderStrong,
+  backgroundImage: {
+    borderRadius: 20,
+    width: '100%',
+    height: '100%',
+    opacity: 0.8,
   },
-  radioCompleted: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+  overlayImage: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    borderRadius: 20,
   },
-  content: {
-    flex: 1,
-  },
-  titulo: {
-    fontSize: 15,
-    fontFamily: 'Mulish_600SemiBold',
-    color: colors.textPrimary,
-  },
-  tituloCompleted: {
-    textDecorationLine: 'line-through',
-    color: colors.textMuted,
-  },
-  descripcion: {
-    fontSize: 13,
-    color: colors.textSecondary,
-    marginTop: 2,
-    fontFamily: 'Mulish_400Regular',
-  },
-  descripcionCompleted: {
-    color: colors.textMuted,
-  },
-  menuButton: {
-    padding: 4,
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-  },
+
   menu: {
     position: 'absolute',
     backgroundColor: colors.surfaceHigh,
     borderRadius: 14,
-    width: 230,
+    width: 200,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.borderStrong,
     shadowColor: '#000',
     shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 8,
+    shadowRadius: 16,
+    elevation: 10,
     overflow: 'hidden',
   },
   menuItem: {
@@ -187,8 +114,7 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 15,
-    fontFamily: 'Mulish_500Medium',
-    color: colors.textPrimary,
+    fontFamily: 'Oswald_400Regular',
   },
   menuDivider: {
     height: 1,

@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#E5E5EA',
   },
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   filterText: {
     fontSize: 13,
-    fontFamily: 'Mulish_600SemiBold',
+    fontFamily: 'Inter_300Light',
     color: '#6B7280',
   },
   filterTextActive: {

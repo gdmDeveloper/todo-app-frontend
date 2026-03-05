@@ -1,6 +1,7 @@
 // app/(tabs)/_layout.jsx
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import colors from '../constants/colors';
 
 export default function TabsLayout() {
   return (
@@ -8,28 +9,34 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#fff',
+          position: 'absolute',
+          bottom: 24,
+          left: 20,
+          right: 20,
+          backgroundColor: colors.surface,
+          borderRadius: 24,
           borderTopWidth: 0,
-          elevation: 8,
+          height: 64,
+          paddingBottom: 0,
+          paddingTop: 8,
+          elevation: 12,
           shadowColor: '#000',
-          shadowOpacity: 0.08,
-          shadowRadius: 8,
-          height: 60,
-          paddingBottom: 8,
+          shadowOpacity: 0.3,
+          shadowRadius: 16,
+          shadowOffset: { width: 0, height: 8 },
         },
-        tabBarActiveTintColor: '#7C3AED',
-        tabBarInactiveTintColor: '#999',
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
         tabBarLabelStyle: {
-          fontFamily: 'Mulish_500Medium',
+          fontFamily: 'Inter_300Light',
           fontSize: 11,
-          fontWeight: '500',
         },
       }}
     >
       <Tabs.Screen
         name="tasks"
         options={{
-          title: 'Tareas',
+          title: 'Mis Tareas',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list-outline" size={size} color={color} />
           ),
@@ -62,6 +69,13 @@ export default function TabsLayout() {
           ),
         }}
       />
+
+      <Tabs.Screen name="groups/[id]" options={{ href: null }} />
+      <Tabs.Screen name="groups/new" options={{ href: null }} />
+      <Tabs.Screen name="groups/join" options={{ href: null }} />
+      <Tabs.Screen name="groups/edit/[id]" options={{ href: null }} />
+      <Tabs.Screen name="tasks/[id]" options={{ href: null }} />
+      <Tabs.Screen name="tasks/new" options={{ href: null }} />
     </Tabs>
   );
 }

@@ -11,11 +11,11 @@ import React, { useCallback, useState } from 'react';
 import { api } from '../../services/api';
 import { router, useFocusEffect } from 'expo-router';
 import { TaskCard } from '../../components/TaskCard';
-import SearchInput from '../../components/Input';
 import { Ionicons } from '@expo/vector-icons';
 import TaskFilters from '../../components/TaskFilters';
 import ScreenLayout from '../../components/ScreenLayout';
 import colors from '../constants/colors';
+import FAB from '../../components/Fab';
 
 // ! TODO: GUARDAR EN CACHE
 /**
@@ -65,20 +65,16 @@ const Tasks = () => {
   return (
     <ScreenLayout title={'Mis Tareas'}>
       <View style={styles.container}>
-        <SearchInput onSearch={onSearch} />
-
         <TaskFilters onFilterChange={fetchTasks} />
 
         <FlatList
           data={tasks}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => <TaskCard task={item} />}
+          renderItem={({ item }) => <TaskCard task={item} onUpdate={fetchTasks} />}
           refreshControl={<RefreshControl refreshing={loading} onRefresh={fetchTasks} />}
           ListEmptyComponent={<Text style={styles.empty}>No tienes tareas</Text>}
         />
-        <TouchableOpacity style={styles.fab} onPress={() => router.push('tasks/new')}>
-          <Ionicons name="add-outline" size={28} color="#fff" />
-        </TouchableOpacity>
+        <FAB href="tasks/new" />
       </View>
     </ScreenLayout>
   );
@@ -95,7 +91,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 60,
     fontSize: 15,
-    fontFamily: 'Mulish_400Regular',
+    fontFamily: 'PlusJakartaSans_600SemiBold',
     color: colors.textSecondary,
   },
   fab: {

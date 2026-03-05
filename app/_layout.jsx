@@ -12,15 +12,32 @@ import {
   Mulish_300Light_Italic,
   Mulish_500Medium,
 } from '@expo-google-fonts/mulish';
-import { TiltNeon_400Regular } from '@expo-google-fonts/tilt-neon';
+
+import { Oswald_400Regular, Oswald_700Bold } from '@expo-google-fonts/oswald';
+
+import {
+  PlusJakartaSans_400Regular,
+  PlusJakartaSans_500Medium,
+  PlusJakartaSans_600SemiBold,
+  PlusJakartaSans_700Bold,
+} from '@expo-google-fonts/plus-jakarta-sans';
+
+import {
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
+
 import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
 const RootLayoutNav = () => {
-  const { token, loading } = useAuth();
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack screenOptions={{ headerShown: false }}>
@@ -44,7 +61,19 @@ export default function RootLayout() {
     Mulish_800ExtraBold,
     Mulish_300Light_Italic,
     Mulish_500Medium,
-    TiltNeon_400Regular,
+    Oswald_400Regular,
+    Oswald_700Bold,
+    PlusJakartaSans_400Regular,
+    PlusJakartaSans_500Medium,
+    PlusJakartaSans_600SemiBold,
+    PlusJakartaSans_700Bold,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
   });
 
   useEffect(() => {

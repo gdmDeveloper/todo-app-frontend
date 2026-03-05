@@ -1,18 +1,43 @@
-// constants/colors.js
-export default {
-  background: '#1C1C1E',
-  surface: '#2C2C2E',
-  surfaceHigh: '#3A3A3C',
-  primary: '#8B5CF6',
-  primaryLight: '#A78BFA',
-  textPrimary: '#F2F2F7',
-  textSecondary: '#8E8E93',
-  textMuted: '#48484A',
-  high: '#FF453A',
-  medium: '#FF9F0A',
-  low: '#30D158',
-  border: '#38383A',
-  borderStrong: '#48484A',
-  headerBg: '#1C1C1E',
-  tabBarBg: '#2C2C2E',
+// app/constants/colors.js
+const colors = {
+  // Fondos
+  background: '#F5F0EB', // crema cálido
+  surface: '#FFFFFF',
+  surfaceHigh: '#FDF8F3',
+
+  // Primario
+  primary: '#FF6B6B', // coral veraniego
+  primaryLight: '#FF8E8E',
+
+  // Acentos
+  cyan: '#4ECDC4', // turquesa playa
+  yellow: '#FFE66D', // amarillo sol
+  green: '#95E1A3', // verde menta
+  pink: '#FF8FAB', // rosa flamenco
+
+  // Prioridades
+  high: '#FF6B6B', // coral
+  medium: '#FFB347', // naranja melocotón
+  low: '#95E1A3', // verde menta
+
+  // Textos
+  textPrimary: '#2D2D2D',
+  textSecondary: '#8A8A9A',
+  textMuted: '#C4C4D0',
+
+  // Bordes
+  border: '#EDE8E3',
+  borderStrong: '#D9D4CF',
+
+  // Glows (menos usados en tema claro)
+  glowPink: '#FF6B6B',
+  glowCyan: '#4ECDC4',
+  glowYellow: '#FFE66D',
+  glowGreen: '#95E1A3',
+  glowPurple: '#C9B8FF',
+
+  // Header
+  headerBg: '#FFFFFF',
 };
+
+export default colors;
