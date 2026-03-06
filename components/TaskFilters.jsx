@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import colors from '../app/constants/colors';
 
 const TaskFilters = ({ onFilterChange }) => {
   const [completedActive, setCompletedActive] = useState(false);
@@ -57,7 +58,7 @@ const TaskFilters = ({ onFilterChange }) => {
           {selectedPriority ? priorityLabels[selectedPriority] : 'Prioridad'}
         </Text>
         <Ionicons
-          name="ellipsis-horizontal"
+          name="ellipsis-vertical"
           size={14}
           color={selectedPriority ? '#fff' : '#6B7280'}
           style={{ marginLeft: 4 }}
@@ -130,11 +131,12 @@ const styles = StyleSheet.create({
     borderColor: '#E5E5EA',
   },
   filterButtonActive: {
-    backgroundColor: '#7C3AED',
-    borderColor: '#7C3AED',
+    backgroundColor: '#D64045',
+    borderColor: '#D64045',
+    color: '#000',
   },
   filterText: {
-    fontSize: 13,
+    fontSize: 16,
     fontFamily: 'Inter_300Light',
     color: '#6B7280',
   },

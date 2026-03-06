@@ -19,21 +19,15 @@ export default function Header() {
 
   return (
     <View style={styles.header}>
-      <View style={styles.left}>
-        <View style={styles.logoCircle}>
-          <Image source={require('../img/hero.png')} style={styles.logo} resizeMode="contain" />
-        </View>
-      </View>
-
       <View style={styles.center}>
         <Text style={styles.dayText}>{day}</Text>
         <Text style={styles.dateText}>{date}</Text>
       </View>
 
-      <View style={styles.right}>
-        <TouchableOpacity onPress={() => router.push('/profile')}>
-          <Ionicons name="person-circle-outline" size={34} color={colors.textSecondary} />
-        </TouchableOpacity>
+      <View style={styles.left}>
+        <View style={styles.logoCircle}>
+          <Image source={require('../img/hero.png')} style={styles.logo} resizeMode="contain" />
+        </View>
       </View>
     </View>
   );
@@ -46,26 +40,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingTop: Platform.OS === 'web' ? 16 : 52,
-    backgroundColor: colors.background,
+    backgroundColor: '#fff',
   },
   left: {
     width: 56,
   },
   logoCircle: {
-    width: 76,
-    height: 76,
-    borderRadius: 50,
-    borderWidth: 1.5,
+    width: 46,
+    height: 46,
     padding: 40,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
   },
   logo: {
-    width: 158,
-    height: 158,
+    width: 100,
+    height: 100,
     tintColor: colors.primary,
   },
   center: {
@@ -73,13 +63,13 @@ const styles = StyleSheet.create({
     gap: 1,
   },
   dayText: {
-    fontFamily: 'Inter_600SemiBold',
-    fontSize: 16,
+    fontFamily: 'RobotoCondensed_400Regular',
+    fontSize: 22,
     color: colors.textPrimary,
   },
   dateText: {
-    fontFamily: 'Inter_400Regular',
-    fontSize: 13,
+    fontFamily: 'RobotoCondensed_400Regular',
+    fontSize: 18,
     color: colors.textSecondary,
   },
   right: {

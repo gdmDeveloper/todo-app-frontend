@@ -1,12 +1,12 @@
 // app/constants/colors.js
 const colors = {
   // Fondos
-  background: '#F5F0EB', // crema cálido
+  background: '#FFFFFF', // crema cálido
   surface: '#FFFFFF',
   surfaceHigh: '#FDF8F3',
 
   // Primario
-  primary: '#FF6B6B', // coral veraniego
+  primary: '#C8553D', // coral veraniego
   primaryLight: '#FF8E8E',
 
   // Acentos
@@ -21,7 +21,7 @@ const colors = {
   low: '#95E1A3', // verde menta
 
   // Textos
-  textPrimary: '#2D2D2D',
+  textPrimary: '#000',
   textSecondary: '#8A8A9A',
   textMuted: '#C4C4D0',
 

@@ -1,7 +1,7 @@
-import { router, Stack } from 'expo-router';
-import { AuthProvider, useAuth } from '../context/AuthContext';
-import '../global.css';
+import { Stack } from 'expo-router';
+import { AuthProvider } from '../context/AuthContext';
 import { useEffect } from 'react';
+import '../global.css';
 
 import {
   Inter_300Light,
@@ -13,6 +13,15 @@ import {
   Inter_900Black,
   useFonts,
 } from '@expo-google-fonts/inter';
+
+import {
+  RobotoCondensed_100Thin_Italic,
+  RobotoCondensed_200ExtraLight,
+  RobotoCondensed_300Light,
+  RobotoCondensed_400Regular,
+  RobotoCondensed_500Medium_Italic,
+  RobotoCondensed_800ExtraBold,
+} from '@expo-google-fonts/roboto-condensed';
 
 import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -43,6 +52,12 @@ export default function RootLayout() {
     Inter_700Bold,
     Inter_800ExtraBold,
     Inter_900Black,
+    RobotoCondensed_100Thin_Italic,
+    RobotoCondensed_200ExtraLight,
+    RobotoCondensed_300Light,
+    RobotoCondensed_400Regular,
+    RobotoCondensed_500Medium_Italic,
+    RobotoCondensed_800ExtraBold,
   });
 
   useEffect(() => {
