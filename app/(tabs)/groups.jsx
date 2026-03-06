@@ -32,7 +32,7 @@ const Groups = () => {
           icon={''}
           text={'Crear grupo'}
           onPress={handleCreateGroup}
-          color={colors.glowYellow}
+          color={colors.textPrimary}
         ></Button>
         <Button icon={''} text={'Unirme a un grupo'}></Button>
 
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 10,
     paddingHorizontal: 24,
+    backgroundColor: colors.background,
   },
 });
 
