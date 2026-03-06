@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { useState } from 'react';
 import colors from '../app/constants/colors';
 import { TaskCardContent } from './TaskCardContent';
+import { useLocalSearchParams } from 'expo-router';
 
 const DEFAULT_CONFIG = {
   color: '#FFFFFF',
@@ -20,11 +21,13 @@ const PRIORITY_CONFIG = {
 
 export function TaskCard({ task, onUpdate }) {
   const [completed, setCompleted] = useState(task.completed);
+
+  const { groupId } = useLocalSearchParams();
   const config = PRIORITY_CONFIG[task.priority] || DEFAULT_CONFIG;
 
   const toggleComplete = async () => {
     try {
-      await api.patch(`tasks/${task._id}`, { completed: !completed });
+      await api.patch(`${groupId}/tasks/${task._id}`, { completed: !completed });
       setCompleted(!completed);
       if (onUpdate) onUpdate();
     } catch (error) {
