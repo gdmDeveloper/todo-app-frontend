@@ -5,8 +5,7 @@ import { api } from '../../services/api';
 import { GroupCard } from '../../components/GroupCard';
 import ScreenLayout from '../../components/ScreenLayout';
 import Button from '../../components/Button';
-('../../components/GroupCard');
-
+import colors from '../constants/colors';
 const Groups = () => {
   const [groups, setGroups] = useState([]);
 
@@ -29,7 +28,12 @@ const Groups = () => {
   return (
     <ScreenLayout title={'Mis Grupos'}>
       <View style={styles.container}>
-        <Button icon={''} text={'Crear grupo'} onPress={handleCreateGroup}></Button>
+        <Button
+          icon={''}
+          text={'Crear grupo'}
+          onPress={handleCreateGroup}
+          color={colors.glowYellow}
+        ></Button>
         <Button icon={''} text={'Unirme a un grupo'}></Button>
 
         <FlatList
