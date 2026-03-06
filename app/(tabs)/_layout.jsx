@@ -76,6 +76,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="groups/edit/[id]" options={{ href: null }} />
       <Tabs.Screen name="tasks/[id]" options={{ href: null }} />
       <Tabs.Screen name="tasks/new" options={{ href: null }} />
+      <Tabs.Screen name="profile" options={{ href: null }} />
     </Tabs>
   );
 }
