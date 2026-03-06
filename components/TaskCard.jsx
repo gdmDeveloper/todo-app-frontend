@@ -27,7 +27,7 @@ export function TaskCard({ task, onUpdate }) {
 
   const toggleComplete = async () => {
     try {
-      await api.patch(`${id}/tasks/${task._id}`, { completed: !completed });
+      await api.patch(`groups/${id}/tasks/${task._id}`, { completed: !completed });
       setCompleted(!completed);
       if (onUpdate) onUpdate();
     } catch (error) {
