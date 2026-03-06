@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   menuItem: { flexDirection: 'row', alignItems: 'center', padding: 16, gap: 12 },
-  menuItemText: { fontSize: 15, fontFamily: 'Oswald_400Regular' },
+  menuItemText: { fontSize: 15, fontFamily: 'Inter_400Regular' },
   menuDivider: { height: 1, backgroundColor: colors.border },
 });

@@ -2,25 +2,6 @@ import { router, Stack } from 'expo-router';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import '../global.css';
 import { useEffect } from 'react';
-import {
-  useFonts,
-  Mulish_400Regular,
-  Mulish_600SemiBold,
-  Mulish_700Bold,
-  Mulish_800ExtraBold,
-  Mulish_200ExtraLight,
-  Mulish_300Light_Italic,
-  Mulish_500Medium,
-} from '@expo-google-fonts/mulish';
-
-import { Oswald_400Regular, Oswald_700Bold } from '@expo-google-fonts/oswald';
-
-import {
-  PlusJakartaSans_400Regular,
-  PlusJakartaSans_500Medium,
-  PlusJakartaSans_600SemiBold,
-  PlusJakartaSans_700Bold,
-} from '@expo-google-fonts/plus-jakarta-sans';
 
 import {
   Inter_300Light,
@@ -30,6 +11,7 @@ import {
   Inter_700Bold,
   Inter_800ExtraBold,
   Inter_900Black,
+  useFonts,
 } from '@expo-google-fonts/inter';
 
 import * as SplashScreen from 'expo-splash-screen';
@@ -54,19 +36,6 @@ const RootLayoutNav = () => {
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    Mulish_200ExtraLight,
-    Mulish_400Regular,
-    Mulish_600SemiBold,
-    Mulish_700Bold,
-    Mulish_800ExtraBold,
-    Mulish_300Light_Italic,
-    Mulish_500Medium,
-    Oswald_400Regular,
-    Oswald_700Bold,
-    PlusJakartaSans_400Regular,
-    PlusJakartaSans_500Medium,
-    PlusJakartaSans_600SemiBold,
-    PlusJakartaSans_700Bold,
     Inter_300Light,
     Inter_400Regular,
     Inter_500Medium,

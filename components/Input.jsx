@@ -48,6 +48,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     color: '#1C1C1E',
-    fontFamily: 'Mulish_400Regular',
+    fontFamily: 'Inter_500Medium',
   },
 });

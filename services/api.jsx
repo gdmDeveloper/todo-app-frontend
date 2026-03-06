@@ -2,7 +2,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
+const API_URL = 'https://todo-app-backend-production-6cd5.up.railway.app/';
 
 const apiRequest = async (endpoint, options = {}) => {
   const token = await AsyncStorage.getItem('token');

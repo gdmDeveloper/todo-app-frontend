@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 15,
-    fontFamily: 'Oswald_400Regular',
+    fontFamily: 'Inter_400Regular',
   },
   menuDivider: {
     height: 1,

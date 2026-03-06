@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 13,
-    fontFamily: 'Mulish_500Medium',
+    fontFamily: 'Inter_500Medium',
     color: 'rgba(255,255,255,0.6)',
     letterSpacing: 0.5,
   },

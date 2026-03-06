@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   groupTitle: {
     fontSize: 28,
-    fontFamily: 'Oswald_700Bold',
+    fontFamily: 'Inter_600SemiBold',
     color: '#fff',
     textShadowColor: '#000',
     textShadowOffset: { width: 1, height: 1 },
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   groupDescription: {
     fontSize: 14,
-    fontFamily: 'Oswald_400Regular',
+    fontFamily: 'Inter_400Regular',
     color: colors.textSecondary,
     textShadowColor: '#000',
     textShadowOffset: { width: 1, height: 1 },

@@ -164,12 +164,12 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 14,
-    fontFamily: 'Mulish_500Medium',
+    fontFamily: 'Inter_400Regular',
     color: '#1C1C1E',
   },
   menuItemTextActive: {
     color: '#7C3AED',
-    fontFamily: 'Mulish_700Bold',
+    fontFamily: 'Inter_700Bold',
   },
   dot: {
     width: 8,
