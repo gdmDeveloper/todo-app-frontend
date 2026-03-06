@@ -9,8 +9,8 @@ export function TaskMenu({ visible, onClose, position, onEdit, onDelete }) {
       <TouchableOpacity style={styles.overlay} onPress={onClose} activeOpacity={1}>
         <View style={[styles.menu, { top: position.top, right: position.right }]}>
           <TouchableOpacity onPress={onEdit} style={styles.menuItem}>
-            <Ionicons name="pencil-outline" size={18} color={colors.cyan} />
-            <Text style={[styles.menuItemText, { color: colors.cyan }]}>Editar</Text>
+            <Ionicons name="pencil-outline" size={18} color={'#000'} />
+            <Text style={[styles.menuItemText, { color: '#000' }]}>Editar</Text>
           </TouchableOpacity>
           <View style={styles.menuDivider} />
           <TouchableOpacity onPress={onDelete} style={styles.menuItem}>

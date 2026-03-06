@@ -27,11 +27,6 @@ export default function NewTask() {
   };
 
   return (
-    <TaskForm
-      key={groupId ?? 'personal'}
-      onSave={handleSave}
-      saving={saving}
-      headerTitle={groupId ? 'Nueva tarea de grupo' : 'Nueva tarea'}
-    />
+    <TaskForm key={Date.now()} onSave={handleSave} saving={saving} headerTitle={'Nueva tarea'} />
   );
 }

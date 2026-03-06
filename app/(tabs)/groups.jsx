@@ -32,7 +32,7 @@ const Groups = () => {
           icon={''}
           text={'Crear grupo'}
           onPress={handleCreateGroup}
-          color={colors.textPrimary}
+          color={colors.high}
         ></Button>
         <Button icon={''} text={'Unirme a un grupo'}></Button>
 

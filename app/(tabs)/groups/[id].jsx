@@ -45,7 +45,7 @@ export default function GroupDetail() {
         data={tasks}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => <TaskCard task={item} onUpdate={fetchData} />}
+        renderItem={({ item }) => <TaskCard groupId={id} task={item} onUpdate={fetchData} />}
         ListEmptyComponent={<Text style={styles.emptyText}>No hay tareas en este grupo</Text>}
       />
 
