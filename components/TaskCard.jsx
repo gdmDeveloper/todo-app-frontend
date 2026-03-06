@@ -22,12 +22,12 @@ const PRIORITY_CONFIG = {
 export function TaskCard({ task, onUpdate }) {
   const [completed, setCompleted] = useState(task.completed);
 
-  const { groupId } = useLocalSearchParams();
+  const { id } = useLocalSearchParams();
   const config = PRIORITY_CONFIG[task.priority] || DEFAULT_CONFIG;
 
   const toggleComplete = async () => {
     try {
-      await api.patch(`${groupId}/tasks/${task._id}`, { completed: !completed });
+      await api.patch(`${id}/tasks/${task._id}`, { completed: !completed });
       setCompleted(!completed);
       if (onUpdate) onUpdate();
     } catch (error) {
