@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from 'react
 import { useState, useRef } from 'react';
 import { router } from 'expo-router';
 import { TaskMenu } from './TaskMenu';
-import colors from '../app/constants/colors';
 
 const DEFAULT_BG = '#2C2C3E'; // color por defecto si no hay imagen
 
@@ -88,7 +87,7 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     elevation: 6,
     position: 'relative',
-    minHeight: 180,
+    minHeight: 100,
   },
   backgroundImage: {
     borderRadius: 20,
