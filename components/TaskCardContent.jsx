@@ -50,9 +50,7 @@ export function TaskCardContent({ task, completed, toggleComplete, config, onUpd
       setMenuVisible(false);
       await api.delete(`tasks/${task._id}`);
       if (onUpdate) onUpdate();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleEdit = () => {

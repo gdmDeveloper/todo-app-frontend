@@ -5,7 +5,6 @@ import { router, useFocusEffect } from 'expo-router';
 import { api } from '../../services/api';
 import { GroupCard } from '../../components/GroupCard';
 import ScreenLayout from '../../components/ScreenLayout';
-import colors from '../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 
 const BRAND = {
@@ -20,6 +19,7 @@ const BRAND = {
   card: '#FFFFFF',
 };
 
+// ─── Empty state — fuera del componente ──────────────────────────
 const EmptyState = () => (
   <View style={s.emptyWrap}>
     <Text style={s.emptyEmoji}>🗂️</Text>
@@ -28,6 +28,42 @@ const EmptyState = () => (
   </View>
 );
 
+// ─── ListHeader — fuera del componente, recibe groups como prop ──
+// Definirlo dentro de Groups crea una función nueva en cada render
+// y el FlatList descarta el contenido renderizado.
+const ListHeader = ({ groups }) => (
+  <View>
+    <View style={s.actionsRow}>
+      <TouchableOpacity
+        style={s.btnPrimary}
+        onPress={() => router.push('groups/new')}
+        activeOpacity={0.85}
+      >
+        <Ionicons name="add" size={16} color="#fff" />
+        <Text style={s.btnPrimaryText}>Crear grupo</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={s.btnOutline}
+        onPress={() => router.push('groups/join')}
+        activeOpacity={0.85}
+      >
+        <Ionicons name="link-outline" size={15} color={BRAND.primary} />
+        <Text style={s.btnOutlineText}>Unirme</Text>
+      </TouchableOpacity>
+    </View>
+
+    {groups.length > 0 && (
+      <View style={s.labelRow}>
+        <Text style={s.labelCount}>
+          {groups.length} grupo{groups.length !== 1 ? 's' : ''}
+        </Text>
+      </View>
+    )}
+  </View>
+);
+
+// ─── Main screen ──────────────────────────────────────────────────
 const Groups = () => {
   const [groups, setGroups] = useState([]);
 
@@ -50,43 +86,8 @@ const Groups = () => {
     }, []),
   );
 
-  const ListHeader = () => (
-    <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
-      {/* Action buttons */}
-      <View style={s.actionsRow}>
-        <TouchableOpacity
-          style={s.btnPrimary}
-          onPress={() => router.push('groups/new')}
-          activeOpacity={0.85}
-        >
-          <Ionicons name="add" size={16} color="#fff" />
-          <Text style={s.btnPrimaryText}>Crear grupo</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={s.btnOutline}
-          onPress={() => router.push('groups/join')}
-          activeOpacity={0.85}
-        >
-          <Ionicons name="link-outline" size={15} color={BRAND.primary} />
-          <Text style={s.btnOutlineText}>Unirme</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Section label */}
-      {groups.length > 0 && (
-        <View style={s.labelRow}>
-          <Text style={s.labelCount}>
-            {groups.length} grupo{groups.length !== 1 ? 's' : ''}
-          </Text>
-        </View>
-      )}
-    </Animated.View>
-  );
-
   return (
     <ScreenLayout title="Mis Grupos">
-      {/* Blobs */}
       <View style={s.blob1} />
       <View style={s.blob2} />
 
@@ -94,16 +95,11 @@ const Groups = () => {
         data={groups}
         keyExtractor={(item) => item._id}
         contentContainerStyle={s.listContent}
-        ListHeaderComponent={<ListHeader />}
+        ListHeaderComponent={<ListHeader groups={groups} />}
         ListEmptyComponent={<EmptyState />}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item, index }) => (
-          <Animated.View
-            style={{
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
-            }}
-          >
+        renderItem={({ item }) => (
+          <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
             <GroupCard
               group={item}
               onPress={() => router.push(`groups/${item._id}`)}
@@ -117,7 +113,6 @@ const Groups = () => {
 };
 
 const s = StyleSheet.create({
-  // ── Blobs ────────────────────────────────────────────────────
   blob1: {
     position: 'absolute',
     top: -60,
@@ -147,7 +142,6 @@ const s = StyleSheet.create({
     paddingBottom: 40,
   },
 
-  // ── Action buttons ───────────────────────────────────────────
   actionsRow: {
     flexDirection: 'row',
     gap: 10,
@@ -193,7 +187,6 @@ const s = StyleSheet.create({
     letterSpacing: 0.1,
   },
 
-  // ── Section label ────────────────────────────────────────────
   labelRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -212,19 +205,9 @@ const s = StyleSheet.create({
     color: BRAND.muted,
   },
 
-  // ── Empty ────────────────────────────────────────────────────
-  emptyWrap: {
-    alignItems: 'center',
-    paddingTop: 60,
-    gap: 8,
-  },
+  emptyWrap: { alignItems: 'center', paddingTop: 60, gap: 8 },
   emptyEmoji: { fontSize: 44, marginBottom: 6 },
-  emptyTitle: {
-    fontSize: 17,
-    fontFamily: 'Inter_700Bold',
-    color: BRAND.text,
-    letterSpacing: -0.3,
-  },
+  emptyTitle: { fontSize: 17, fontFamily: 'Inter_700Bold', color: BRAND.text, letterSpacing: -0.3 },
   emptyDesc: {
     fontSize: 13,
     fontFamily: 'Inter_400Regular',

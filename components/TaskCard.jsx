@@ -46,9 +46,7 @@ export function TaskCard({ task, onUpdate, groupId }) {
       setMenuVisible(false);
       await api.delete(`tasks/${task._id}`);
       if (onUpdate) onUpdate();
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const handleEdit = () => {
@@ -74,9 +72,7 @@ export function TaskCard({ task, onUpdate, groupId }) {
       await api.patch(endpoint, { completed: next });
       setCompleted(next);
       if (onUpdate) onUpdate();
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   return (

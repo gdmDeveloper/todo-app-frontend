@@ -1,8 +1,18 @@
 // components/Header.jsx
-import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { router } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import colors from '../app/constants/colors';
+import { View, Text, Image, StyleSheet, Platform } from 'react-native';
+import { useAuth } from '../context/AuthContext';
+
+const BRAND = {
+  primary: '#FF6B35',
+  secondary: '#FFD23F',
+  accent: '#06D6A0',
+  border: '#FFD9C0',
+  surface: '#FFF8F0',
+  bg: '#FFFBF5',
+  text: '#1A1A2E',
+  muted: '#9B8EA8',
+  card: '#FFFFFF',
+};
 
 const getDayAndDate = () => {
   const now = new Date();
@@ -14,66 +24,114 @@ const getDayAndDate = () => {
   };
 };
 
+const getGreeting = () => {
+  const h = new Date().getHours();
+  if (h < 12) return 'Buenos días';
+  if (h < 20) return 'Buenas tardes';
+  return 'Buenas noches';
+};
+
 export default function Header() {
+  // ✅ useAuth dentro del componente — React detecta cambios y re-renderiza
+  const auth = useAuth();
+  const user = auth?.user;
+  const isLoading = auth?.isLoading;
+
   const { day, date } = getDayAndDate();
 
   return (
-    <View style={styles.header}>
-      <View style={styles.center}>
-        <Text style={styles.dayText}>{day}</Text>
-        <Text style={styles.dateText}>{date}</Text>
+    <View style={s.header}>
+      {/* Left: logo */}
+      <View style={s.logoWrap}>
+        <Image source={require('../img/hero.png')} style={s.logo} resizeMode="contain" />
       </View>
 
-      <View style={styles.left}>
-        <View style={styles.logoCircle}>
-          <Image source={require('../img/hero.png')} style={styles.logo} resizeMode="contain" />
+      {/* Center: greeting + date */}
+      <View style={s.center}>
+        <Text style={s.greeting}>
+          {getGreeting()}
+          {user?.name ? `, ${user.name}` : ''}
+        </Text>
+        <View style={s.dateRow}>
+          <Text style={s.dayText}>{day}</Text>
+          <View style={s.dateDot} />
+          <Text style={s.dateText}>{date}</Text>
         </View>
       </View>
+
+      {/* Right: accent dot */}
+      <View style={s.accentDot} />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const s = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'web' ? 16 : 52,
-    backgroundColor: '#fff',
+    paddingTop: Platform.OS === 'ios' ? 56 : Platform.OS === 'web' ? 16 : 40,
+    paddingBottom: 14,
+    backgroundColor: BRAND.card,
+    borderBottomWidth: 1,
+    borderBottomColor: BRAND.border,
+    gap: 12,
   },
-  left: {
-    width: 56,
-  },
-  logoCircle: {
-    width: 46,
-    height: 46,
-    padding: 40,
+  logoWrap: {
+    width: 38,
+    height: 38,
+    borderRadius: 11,
+    backgroundColor: BRAND.surface,
+    borderWidth: 1,
+    borderColor: BRAND.border,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    flexShrink: 0,
   },
   logo: {
-    width: 100,
-    height: 100,
-    tintColor: colors.primary,
+    width: 52,
+    height: 52,
+    tintColor: BRAND.primary,
   },
   center: {
+    flex: 1,
+    gap: 2,
+  },
+  greeting: {
+    fontSize: 11,
+    fontFamily: 'Inter_400Regular',
+    color: BRAND.muted,
+    letterSpacing: 0.3,
+    textTransform: 'uppercase',
+  },
+  dateRow: {
+    flexDirection: 'row',
     alignItems: 'center',
-    gap: 1,
+    gap: 6,
   },
   dayText: {
-    fontFamily: 'RobotoCondensed_400Regular',
-    fontSize: 22,
-    color: colors.textPrimary,
+    fontSize: 16,
+    fontFamily: 'Inter_700Bold',
+    color: BRAND.text,
+    letterSpacing: -0.3,
+  },
+  dateDot: {
+    width: 3,
+    height: 3,
+    borderRadius: 2,
+    backgroundColor: BRAND.primary,
   },
   dateText: {
-    fontFamily: 'RobotoCondensed_400Regular',
-    fontSize: 18,
-    color: colors.textSecondary,
+    fontSize: 14,
+    fontFamily: 'Inter_400Regular',
+    color: BRAND.muted,
   },
-  right: {
-    width: 52,
-    alignItems: 'flex-end',
+  accentDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: BRAND.accent,
+    flexShrink: 0,
   },
 });

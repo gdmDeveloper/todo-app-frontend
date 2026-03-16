@@ -54,7 +54,7 @@ export default function NewGroup() {
       saving={saving}
       onSave={handleSave}
       headerTitle="Nuevo grupo"
-      onBack={() => router.back()}
+      onBack={() => router.push('groups')}
     />
   );
 }

@@ -12,9 +12,7 @@ const JoinGroup = () => {
       const data = await api.get(`groups/search?code=${code}`); // Invitation code.
       setGroupInfo(data);
       setModalVisible(true);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleJoin = async () => {

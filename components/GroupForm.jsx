@@ -11,7 +11,18 @@ import {
   Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import colors from '../app/constants/colors';
+
+const BRAND = {
+  primary: '#FF6B35',
+  accent: '#06D6A0',
+  secondary: '#FFD23F',
+  border: '#FFD9C0',
+  surface: '#FFF8F0',
+  bg: '#FFFBF5',
+  text: '#1A1A2E',
+  muted: '#9B8EA8',
+  card: '#FFFFFF',
+};
 
 export default function GroupForm({
   title,
@@ -26,74 +37,85 @@ export default function GroupForm({
   headerTitle,
   onBack,
 }) {
+  const isEdit = headerTitle === 'Editar grupo';
+
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        {/* Imagen de portada como hero */}
+    <View style={s.container}>
+      <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
+        {/* ── Hero / cover ── */}
         <TouchableOpacity onPress={pickImage} disabled={uploading} activeOpacity={0.9}>
           {coverImage ? (
-            <View style={styles.heroContainer}>
-              <Image source={{ uri: coverImage }} style={styles.heroImage} />
-              <View style={styles.heroOverlay} />
-              {/* Header encima de la imagen */}
-              <View style={styles.headerOverImage}>
-                <TouchableOpacity onPress={onBack} style={styles.backButton}>
-                  <Ionicons name="chevron-back" size={22} color="#fff" />
+            <View style={s.heroContainer}>
+              <Image source={{ uri: coverImage }} style={s.heroImage} />
+              <View style={s.heroOverlay} />
+              <View style={s.headerOverImage}>
+                <TouchableOpacity onPress={onBack} style={s.backBtnDark} activeOpacity={0.8}>
+                  <Ionicons name="chevron-back" size={18} color="#fff" />
                 </TouchableOpacity>
-                <View style={styles.editBadge}>
-                  <Ionicons name="camera-outline" size={14} color="#fff" />
-                  <Text style={styles.editBadgeText}>Cambiar</Text>
+                <View style={s.changeBadge}>
+                  <Ionicons name="camera-outline" size={13} color="#fff" />
+                  <Text style={s.changeBadgeText}>Cambiar</Text>
                 </View>
               </View>
             </View>
           ) : (
-            <View style={styles.heroPlaceholder}>
-              <View style={styles.headerOverImage}>
-                <TouchableOpacity onPress={onBack} style={styles.backButtonDark}>
-                  <Ionicons name="chevron-back" size={22} color={colors.textPrimary} />
+            <View style={s.heroPlaceholder}>
+              <View style={s.headerOverImage}>
+                <TouchableOpacity onPress={onBack} style={s.backBtnLight} activeOpacity={0.8}>
+                  <Ionicons name="chevron-back" size={18} color={BRAND.text} />
                 </TouchableOpacity>
               </View>
-              <Ionicons name="image-outline" size={36} color={colors.textMuted} />
-              <Text style={styles.placeholderText}>Añadir imagen de portada</Text>
-              {uploading && (
-                <View style={styles.uploadingOverlay}>
-                  <ActivityIndicator color="#fff" />
-                </View>
+
+              {/* Blobs decorativos en el placeholder */}
+              <View style={s.placeholderBlob1} />
+              <View style={s.placeholderBlob2} />
+
+              {uploading ? (
+                <ActivityIndicator color={BRAND.primary} size="large" />
+              ) : (
+                <>
+                  <View style={s.cameraIconWrap}>
+                    <Ionicons name="camera-outline" size={28} color={BRAND.primary} />
+                  </View>
+                  <Text style={s.placeholderTitle}>Añadir portada</Text>
+                  <Text style={s.placeholderSub}>Opcional · 16:9 recomendado</Text>
+                </>
               )}
             </View>
           )}
         </TouchableOpacity>
 
-        {/* Contenido del form */}
-        <View style={styles.formContainer}>
-          {/* Título grande estilo notion */}
+        {/* ── Form ── */}
+        <View style={s.formWrap}>
+          {/* Label */}
           <TextInput
-            style={styles.titleInput}
+            style={s.titleInput}
             value={title}
             onChangeText={setTitle}
             placeholder="Nombre del grupo"
-            placeholderTextColor={colors.textMuted}
+            placeholderTextColor={BRAND.muted}
             multiline
           />
 
-          <View style={styles.divider} />
+          <View style={s.divider} />
 
-          {/* Descripción */}
+          {/* Description */}
           <TextInput
-            style={styles.descriptionInput}
+            style={s.descInput}
             value={description}
             onChangeText={setDescription}
             placeholder="Añade una descripción..."
-            placeholderTextColor={colors.textMuted}
+            placeholderTextColor={BRAND.muted}
             multiline
+            textAlignVertical="top"
           />
         </View>
       </ScrollView>
 
-      {/* Botón guardar flotante abajo */}
-      <View style={styles.footer}>
+      {/* ── Save button ── */}
+      <View style={s.footer}>
         <TouchableOpacity
-          style={[styles.saveButton, saving && { opacity: 0.6 }]}
+          style={[s.saveBtn, saving && { opacity: 0.6 }]}
           onPress={onSave}
           disabled={saving}
           activeOpacity={0.85}
@@ -103,9 +125,7 @@ export default function GroupForm({
           ) : (
             <>
               <Ionicons name="checkmark" size={18} color="#fff" />
-              <Text style={styles.saveButtonText}>
-                {headerTitle === 'Editar grupo' ? 'Guardar cambios' : 'Crear grupo'}
-              </Text>
+              <Text style={s.saveBtnText}>{isEdit ? 'Guardar cambios' : 'Crear grupo'}</Text>
             </>
           )}
         </TouchableOpacity>
@@ -114,49 +134,76 @@ export default function GroupForm({
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
-  scroll: { paddingBottom: 120 },
+const s = StyleSheet.create({
+  container: { flex: 1, backgroundColor: BRAND.bg },
+  scroll: { paddingBottom: 140 },
 
-  // Hero imagen
-  heroContainer: {
-    width: '100%',
-    height: 260,
-  },
-  heroImage: {
-    width: '100%',
-    height: '100%',
-  },
+  // ── Hero con imagen ──────────────────────────────────────────
+  heroContainer: { width: '100%', height: 240 },
+  heroImage: { width: '100%', height: '100%' },
   heroOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.25)',
+    backgroundColor: 'rgba(0,0,0,0.35)',
   },
+
+  // ── Hero placeholder ─────────────────────────────────────────
   heroPlaceholder: {
     width: '100%',
     height: 200,
-    backgroundColor: colors.surface,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8,
+    backgroundColor: BRAND.surface,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-  },
-  placeholderText: {
-    fontSize: 14,
-    fontFamily: 'Inter_400Regular',
-    color: colors.textMuted,
-  },
-  uploadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderBottomColor: BRAND.border,
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 6,
+    overflow: 'hidden',
+  },
+  placeholderBlob1: {
+    position: 'absolute',
+    top: -40,
+    right: -40,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    backgroundColor: BRAND.secondary,
+    opacity: 0.25,
+  },
+  placeholderBlob2: {
+    position: 'absolute',
+    bottom: -30,
+    left: -30,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: BRAND.accent,
+    opacity: 0.2,
+  },
+  cameraIconWrap: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    backgroundColor: BRAND.card,
+    borderWidth: 1,
+    borderColor: BRAND.border,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  placeholderTitle: {
+    fontSize: 14,
+    fontFamily: 'Inter_600SemiBold',
+    color: BRAND.text,
+  },
+  placeholderSub: {
+    fontSize: 11,
+    fontFamily: 'Inter_400Regular',
+    color: BRAND.muted,
   },
 
-  // Header encima de imagen
+  // ── Header over image ────────────────────────────────────────
   headerOverImage: {
     position: 'absolute',
-    top: Platform.OS === 'web' ? 16 : 52,
+    top: Platform.OS === 'ios' ? 52 : Platform.OS === 'web' ? 16 : 40,
     left: 0,
     right: 0,
     flexDirection: 'row',
@@ -164,23 +211,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
   },
-  backButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: 'rgba(0,0,0,0.35)',
+  backBtnDark: {
+    width: 34,
+    height: 34,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backButtonDark: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: colors.surface,
+  backBtnLight: {
+    width: 34,
+    height: 34,
+    borderRadius: 10,
+    backgroundColor: BRAND.card,
+    borderWidth: 1,
+    borderColor: BRAND.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  editBadge: {
+  changeBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
@@ -189,64 +240,70 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 20,
   },
-  editBadgeText: {
-    fontSize: 12,
+  changeBadgeText: {
+    fontSize: 11,
     fontFamily: 'Inter_500Medium',
     color: '#fff',
   },
 
-  // Form
-  formContainer: {
+  // ── Form ─────────────────────────────────────────────────────
+  formWrap: {
     paddingHorizontal: 20,
     paddingTop: 24,
   },
-  titleInput: {
-    fontSize: 28,
+  sectionLabel: {
+    fontSize: 11,
     fontFamily: 'Inter_700Bold',
-    color: colors.textPrimary,
-    paddingVertical: 8,
+    color: BRAND.primary,
+    letterSpacing: 0.5,
+    marginBottom: 8,
+  },
+  titleInput: {
+    fontSize: 26,
+    fontFamily: 'Inter_700Bold',
+    color: BRAND.text,
+    letterSpacing: -0.5,
+    paddingVertical: 4,
     minHeight: 44,
-    padding: 10,
   },
   divider: {
     height: 1,
-    backgroundColor: colors.border,
-    marginVertical: 16,
+    backgroundColor: BRAND.border,
+    marginVertical: 20,
   },
-  descriptionInput: {
+  descInput: {
     fontSize: 15,
     fontFamily: 'Inter_400Regular',
-    color: colors.textPrimary,
+    color: BRAND.text,
     minHeight: 100,
     lineHeight: 24,
-    textAlignVertical: 'top',
-    padding: 10,
   },
 
-  // Footer
+  // ── Footer ───────────────────────────────────────────────────
   footer: {
     position: 'absolute',
-    bottom: 100,
+    bottom: 102,
     left: 20,
     right: 20,
   },
-  saveButton: {
-    backgroundColor: colors.primary,
+  saveBtn: {
+    backgroundColor: BRAND.primary,
     borderRadius: 16,
     paddingVertical: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    shadowColor: colors.primary,
-    shadowOpacity: 0.35,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
+    shadowColor: BRAND.primary,
+    shadowOpacity: 0.4,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 7,
   },
-  saveButtonText: {
-    fontSize: 16,
+  saveBtnText: {
+    fontSize: 15,
     fontFamily: 'Inter_600SemiBold',
     color: '#fff',
+    letterSpacing: 0.2,
   },
 });

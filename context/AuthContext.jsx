@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
       if (savedToken) {
         setToken(savedToken);
         const userData = await api.get('profile');
-        setUser(userData);
+        setUser(userData.user);
       }
       setLoading(false);
     };
