@@ -18,9 +18,24 @@ const BRAND = {
 };
 
 const PRIORITY = {
-  high: { label: 'Alta', color: '#FF4757', bg: '#FFF0F1' },
-  medium: { label: 'Media', color: '#FF6B35', bg: '#FFF4F0' },
-  low: { label: 'Baja', color: '#06D6A0', bg: '#EDFDF8' },
+  high: {
+    label: 'Alta',
+    color: '#FF4757',
+    bg: 'rgba(255,71,87,0.08)',
+    glow: 'rgba(255,71,87,0.15)',
+  },
+  medium: {
+    label: 'Media',
+    color: '#FF6B35',
+    bg: 'rgba(255,107,53,0.08)',
+    glow: 'rgba(255,107,53,0.15)',
+  },
+  low: {
+    label: 'Baja',
+    color: '#06D6A0',
+    bg: 'rgba(6,214,160,0.08)',
+    glow: 'rgba(6,214,160,0.15)',
+  },
 };
 
 export function TaskCard({ task, onUpdate, groupId }) {
@@ -28,7 +43,7 @@ export function TaskCard({ task, onUpdate, groupId }) {
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
 
-  const fadeAnim = useRef(new Animated.Value(task.completed ? 0.45 : 1)).current;
+  const fadeAnim = useRef(new Animated.Value(task.completed ? 0.5 : 1)).current;
   const checkScale = useRef(new Animated.Value(1)).current;
   const menuRef = useRef(null);
 
@@ -56,14 +71,14 @@ export function TaskCard({ task, onUpdate, groupId }) {
 
   const handleToggle = async () => {
     Animated.sequence([
-      Animated.spring(checkScale, { toValue: 0.75, useNativeDriver: true, friction: 4 }),
+      Animated.spring(checkScale, { toValue: 0.72, useNativeDriver: true, friction: 4 }),
       Animated.spring(checkScale, { toValue: 1, useNativeDriver: true, friction: 4 }),
     ]).start();
 
     const next = !completed;
     Animated.timing(fadeAnim, {
-      toValue: next ? 0.45 : 1,
-      duration: 250,
+      toValue: next ? 0.5 : 1,
+      duration: 280,
       useNativeDriver: true,
     }).start();
 
@@ -76,7 +91,13 @@ export function TaskCard({ task, onUpdate, groupId }) {
   };
 
   return (
-    <Animated.View style={[s.card, p && { borderLeftColor: p.color }, { opacity: fadeAnim }]}>
+    <Animated.View
+      style={[
+        s.card,
+        p && { borderLeftColor: p.color, shadowColor: p.color },
+        { opacity: fadeAnim },
+      ]}
+    >
       <TaskMenu
         visible={menuVisible}
         onClose={() => setMenuVisible(false)}
@@ -85,19 +106,35 @@ export function TaskCard({ task, onUpdate, groupId }) {
         onDelete={handleDelete}
       />
 
+      {/* Priority tint background */}
+      {p && !completed && <View style={[s.priorityTint, { backgroundColor: p.bg }]} />}
+
       <View style={s.row}>
-        {/* Check */}
+        {/* Check button */}
         <Animated.View style={{ transform: [{ scale: checkScale }] }}>
-          <TouchableOpacity onPress={handleToggle} style={s.checkWrap} activeOpacity={0.8}>
-            <View style={[s.check, completed && s.checkDone]}>
-              {completed && <Ionicons name="checkmark" size={11} color="#fff" />}
+          <TouchableOpacity onPress={handleToggle} activeOpacity={0.8} style={s.checkWrap}>
+            <View
+              style={[
+                s.check,
+                completed && s.checkDone,
+                p && !completed && { borderColor: p.color },
+              ]}
+            >
+              {completed ? (
+                <Ionicons name="checkmark" size={11} color="#fff" />
+              ) : (
+                p && <View style={[s.checkInnerDot, { backgroundColor: p.color }]} />
+              )}
             </View>
           </TouchableOpacity>
         </Animated.View>
 
-        {/* Content */}
+        {/* Text content */}
         <View style={s.content}>
-          <Text style={[s.title, completed && s.titleDone]} numberOfLines={1}>
+          <Text
+            style={[s.title, completed && s.titleDone, p && !completed && { color: BRAND.text }]}
+            numberOfLines={1}
+          >
             {task.title}
           </Text>
           {!!task.description?.trim() && (
@@ -107,19 +144,20 @@ export function TaskCard({ task, onUpdate, groupId }) {
           )}
         </View>
 
-        {/* Right: priority + menu */}
+        {/* Right side */}
         <View style={s.right}>
-          {p && (
-            <View style={[s.badge, { backgroundColor: p.bg }]}>
-              <View style={[s.badgeDot, { backgroundColor: p.color }]} />
+          {p && !completed && (
+            <View style={[s.priorityChip, { backgroundColor: p.bg, borderColor: p.color + '40' }]}>
+              <Text style={[s.priorityLabel, { color: p.color }]}>{p.label}</Text>
             </View>
           )}
           <TouchableOpacity
             ref={menuRef}
             onPress={openMenu}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            style={s.menuBtn}
           >
-            <Ionicons name="ellipsis-vertical" size={15} color={BRAND.muted} />
+            <Ionicons name="ellipsis-vertical" size={14} color={BRAND.muted} />
           </TouchableOpacity>
         </View>
       </View>
@@ -130,20 +168,27 @@ export function TaskCard({ task, onUpdate, groupId }) {
 const s = StyleSheet.create({
   card: {
     backgroundColor: BRAND.card,
-    borderRadius: 14,
-    marginBottom: 8,
+    borderRadius: 16,
+    marginBottom: 10,
     paddingHorizontal: 14,
-    paddingVertical: 12,
+    paddingVertical: 13,
     borderWidth: 1,
     borderColor: BRAND.border,
     borderLeftWidth: 3,
     borderLeftColor: BRAND.border,
-    shadowColor: '#000',
-    shadowOpacity: 0.04,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 3,
+    overflow: 'hidden',
   },
+
+  // Subtle priority tint across the whole card
+  priorityTint: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 16,
+  },
+
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -153,9 +198,9 @@ const s = StyleSheet.create({
   // ── Check ────────────────────────────────────────────────────
   checkWrap: { padding: 2 },
   check: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     borderWidth: 1.5,
     borderColor: BRAND.border,
     backgroundColor: BRAND.surface,
@@ -166,9 +211,15 @@ const s = StyleSheet.create({
     backgroundColor: BRAND.accent,
     borderColor: BRAND.accent,
   },
+  checkInnerDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    opacity: 0.6,
+  },
 
   // ── Content ──────────────────────────────────────────────────
-  content: { flex: 1, gap: 2 },
+  content: { flex: 1, gap: 3 },
   title: {
     fontSize: 14,
     fontFamily: 'Inter_600SemiBold',
@@ -191,19 +242,24 @@ const s = StyleSheet.create({
   right: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 6,
     flexShrink: 0,
   },
-  badge: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+  priorityChip: {
+    borderWidth: 1,
+    borderRadius: 20,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  priorityLabel: {
+    fontSize: 10,
+    fontFamily: 'Inter_600SemiBold',
+    letterSpacing: 0.2,
+  },
+  menuBtn: {
+    width: 24,
+    height: 24,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  badgeDot: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
   },
 });
